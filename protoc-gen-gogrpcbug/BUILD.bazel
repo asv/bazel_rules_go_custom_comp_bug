@@ -1,0 +1,33 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "go_default_library",
+    srcs = ["main.go"],
+    importpath = "github.com/asv/bazel_rules_go_custom_comp_bug/protoc-gen-gogrpcbug",
+    visibility = ["//visibility:private"],
+    deps = [
+        "@com_github_golang_protobuf//proto:go_default_library",
+        "@com_github_golang_protobuf//protoc-gen-go/generator:go_default_library_gen",
+        "@com_github_golang_protobuf//protoc-gen-go/grpc:go_default_library",
+    ],
+)
+
+go_binary(
+    name = "protoc-gen-gogrpcbug",
+    embed = [":go_default_library"],
+    visibility = ["//visibility:public"],
+)
+
+load("@io_bazel_rules_go//proto:compiler.bzl", "go_proto_compiler")
+load("@io_bazel_rules_go//proto/wkt:well_known_types.bzl", "WELL_KNOWN_TYPE_RULES")
+
+go_proto_compiler(
+    name = "go_grpc_bug",
+    options = ["plugins=gogrpcbug+grpc"],
+    plugin = ":protoc-gen-gogrpcbug",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@com_github_golang_protobuf//proto:go_default_library",
+        "@org_golang_google_grpc//:go_default_library",
+    ] + WELL_KNOWN_TYPE_RULES.values(),
+)

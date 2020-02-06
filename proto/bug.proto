@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package bug;
+
+option go_package = "github.com/asv/bazel_rules_go_custom_comp_bug/proto;bug";
+
+service BugService {
+  rpc FireBug(FireBugRequest) returns(FireBugResponse);
+}
+
+message FireBugRequest {
+}
+
+message FireBugResponse {
+}

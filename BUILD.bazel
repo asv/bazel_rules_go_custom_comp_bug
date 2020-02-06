@@ -1,0 +1,5 @@
+load("@bazel_gazelle//:def.bzl", "gazelle")
+
+# gazelle:prefix github.com/asv/bazel_rules_go_custom_comp_bug
+# gazelle:go_grpc_compilers //protoc-gen-gogrpcbug:go_grpc_bug
+gazelle(name = "gazelle")
